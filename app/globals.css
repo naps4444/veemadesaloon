@@ -1,26 +1,186 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Cinzel+Decorative&family=Pacifico&family=Rakkas&family=Volkhov&family=Dancing+Script&display=swap');
+
+@font-face {
+  font-family: "Lavishly Yours";
+  src: url("/fonts/LavishlyYours.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "Cinzel Decorative";
+  src: url("/fonts/CinzelDecorative.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @font-face {
+    font-family: "Cinzel";
+    src: url("/fonts/Cinzel.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
   }
+
+
+@font-face {
+  font-family: "Croissant One";
+  src: url("/fonts/CroissantOne.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: "Dancing Script";
+  src: url("/fonts/DancingScript.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
+
+ 
+@font-face {
+  font-family: "Cormorant Upright";
+  src: url("/fonts/CormorantUpright.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+
+
+/* System fonts */
+@font-face {
+  font-family: "Lucida Bright";
+  src: local("Lucida Bright");
+}
+
+@font-face {
+  font-family: "Rage Italic";
+  src: local("Rage Italic");
+}
+
+/* Example classes */
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+
+
+.font-pacifico {
+  font-family: 'Pacifico', cursive;
+}
+
+.font-rakkas {
+  font-family: 'Rakkas', cursive;
+}
+
+.font-volkhov {
+  font-family: 'Volkhov', serif;
+}
+
+.font-dancing-script {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-georgia {
+  font-family: Georgia, serif;
+}
+
+.font-lucida-bright {
+  font-family: 'Lucida Bright', serif;
+}
+
+.font-rage-italic {
+  font-family: 'Rage Italic', cursive;
+}
+
+.font-lavishly-yours {
+  font-family: "Lavishly Yours", cursive;
+}
+
+.font-cinzel-decorative {
+    font-family: "Cinzel Decorative", cursive;
+}
+.font-cinzel {
+    font-family: "Cinzel", serif;
+}
+
+.font-croissant-one {
+  font-family: "Croissant One", cursive;
+}
+
+.font-dancing-script {
+  font-family: "Dancing Script", cursive;
+}
+
+.font-cormorant-upright {
+  font-family: "Cormorant Upright", serif;
+}
+
+
+
+
+
+
+/* Datepicker dark theme overrides */
+.react-datepicker,
+.react-datepicker__month-container {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-family: "Cinzel", serif;
+}
+
+.react-datepicker__header {
+  background-color: #000 !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+.react-datepicker__day {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.selected-day {
+  background-color: #223728 !important;
+  color: white !important;
+  border-radius: 0.3rem;
+}
+
+.react-datepicker__day--disabled {
+  color: #555 !important;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__current-month {
+  color: #ccc !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #fff !important;
+}
+/* Add full width and black background */
+.custom-calendar {
+  /* width: 100% !important;
+  max-width: 100%; */
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* global.css */
+.react-datepicker__day:hover,
+.react-datepicker__navigation:hover {
+  background-color: #291F19;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
