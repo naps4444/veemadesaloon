@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import ServiceCard from '@/components/ServiceCard';
 import { Service } from '@/types/service';
+import { toast } from 'react-hot-toast';
 
 const services: Service[] = [
   { id: '1', name: "Massage Chair Session", price: 5000 },
@@ -30,10 +32,25 @@ const services: Service[] = [
   { id: '21', name: "French Tip Pedicure", price: 7000 },
 ];
 
-
 export default function ServicesPage() {
   const router = useRouter();
   const { selectedServices, addService, removeService } = useCartStore();
+  const [bgImage, setBgImage] = useState('');
+
+  useEffect(() => {
+    const updateBackground = () => {
+      const isDesktop = window.innerWidth >= 768;
+      setBgImage(
+        isDesktop
+          ? 'https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752239513/desbrown_hlthgr.png'
+          : 'https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752239517/mobbrown_bzxp1s.png'
+      );
+    };
+
+    updateBackground();
+    window.addEventListener('resize', updateBackground);
+    return () => window.removeEventListener('resize', updateBackground);
+  }, []);
 
   const isSelected = (id: string) => selectedServices.some((s) => s.id === id);
 
@@ -44,19 +61,22 @@ export default function ServicesPage() {
   };
 
   const handleBooking = () => {
-    if (selectedServices.length === 0) {
-      alert('Please select at least one service.');
-      return;
-    }
-    router.push('/select-slot'); // Changed from /checkout
-  };
+  if (selectedServices.length === 0) {
+    toast.error('Please select at least one service.');
+    return;
+  }
+  router.push('/booking');
+};
 
   return (
-    <div className="min-h-screen px-4 py-6 md:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div
+      className="min-h-screen bg-no-repeat bg-cover bg-center px-4 py-6 md:px-8"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className="max-w-6xl mx-auto bg-opacity-90 pt-20">
         {/* Header */}
-        <div className="flex justify-between items-center my-[40px]">
-          <div className="flex gap-3 items-center">
+        <div className="flex justify-between items-center bg-[#22372889] rounded pb-4 px-4">
+          <div className="flex gap-3 items-center mt-5">
             <Image
               src="/vertline.svg"
               alt="line"
@@ -64,7 +84,7 @@ export default function ServicesPage() {
               height={50}
               className=" w-[3px]"
             />
-            <div>
+            <div className='text-white'>
               <h1 className="font-croissant-one text-lg md:text-xl">SALOON</h1>
               <h1 className="font-cinzel-decorative text-lg md:text-xl">SERVICES</h1>
             </div>
@@ -79,10 +99,10 @@ export default function ServicesPage() {
         </div>
 
         {/* Service Menu */}
-        <h2 className="text-center font-cinzel text-xl md:text-2xl mb-1 hidden md:block">
+        <h2 className="text-center font-cinzel text-xl md:text-2xl mb-1 hidden md:block md:mt-5">
           SERVICE MENU
         </h2>
-        <p className="text-center text-xs font-cormorant-upright mb-6">
+        <p className="text-center text-xs font-cormorant-upright mb-6 mt-5 md:mt-1">
           Tick Box Services Needed
         </p>
 

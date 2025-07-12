@@ -9,15 +9,15 @@ const Footer = () => {
             <div className=' text-white flex flex-col md:flex-row gap-4 p-3 md:px-4 py-6 2xl:container mx-auto justify-between md:text-center font-croissant-one'>
             <div className='text-[14px]'>
                 <h1 className='text-[18px] '>SAY HELLO</h1>
-                <p className='mt-2'>Phone +234-814-861-1561</p>
+                <p className='mt-2'>Phone +234-903-668-2394</p>
                 <p>Email: info@mysite.com</p>
 
                 <div className='flex justify-between md:mx-auto mt-1 w-[80px]'>
-                    <Image src="fb.svg" alt='icon veemade facebook' width={20} height={20} className='' />
+                    <Image src="/fb.svg" alt='icon veemade facebook' width={20} height={20} className='' />
 
-                    <Image src="ig.svg" alt='icon veemade facebook' width={20} height={20} className='' />
+                    <Image src="/ig.svg" alt='icon veemade facebook' width={20} height={20} className='' />
 
-                    <Image src="wa.svg" alt='icon veemade facebook' width={20} height={20} className='' />
+                    <Image src="/wa.svg" alt='icon veemade facebook' width={20} height={20} className='' />
                 </div>
             </div>
 

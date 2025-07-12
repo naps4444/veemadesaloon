@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
+import { toast } from 'react-hot-toast';
 
 const allServices = [
   { id: 1, name: "Massage Chair Session", price: 5000 },
@@ -42,11 +43,12 @@ const Services = () => {
 
  const handleBookNow = () => {
   if (selectedServices.length === 0) {
-    alert('Please select at least one service.');
+    toast.error('Please select at least one service.');
     return;
   }
-  router.push('/select-slot'); // ← updated to go to time slot page
+  router.push('/booking');
 };
+
 
 
   const firstHalf = allServices.slice(0, 10);
