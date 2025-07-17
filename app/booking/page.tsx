@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Image from 'next/image';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
 
@@ -30,7 +32,13 @@ export default function Booking() {
   const [tempName, setTempName] = useState('');
   const [tempEmail, setTempEmail] = useState('');
   const [tempPhone, setTempPhone] = useState('');
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!date) return;
@@ -95,60 +103,88 @@ export default function Booking() {
       <h1 className="text-xl mb-4 font-semibold text-center font-croissant-one">Select Date & Time</h1>
 
       <div className="md:flex justify-center w-full relative">
-        <div className="max-w-md flex justify-center md:mt-6 relative z-20">
-          <DatePicker
-            selected={date}
-            onChange={(d) => setDateInput(d)}
-            inline
-            calendarClassName="custom-calendar"
-            dayClassName={(d) =>
-              date && d.toDateString() === date.toDateString() ? 'selected-day' : ''
-            }
-          />
-          <Image
-            src="/sunflower.png"
-            alt="Sunflower"
-            height={100}
-            width={100}
-            className="block w-[150px] md:w-[200px] absolute -left-8 md:-left-24 -z-10"
-          />
-        </div>
+        {loading ? (
+          <>
+            {/* Calendar skeleton */}
+            <div className="max-w-md flex justify-center md:mt-6 relative z-20">
+              <Skeleton height={300} width={280} borderRadius={12} />
+            </div>
 
-        <div className="grid grid-cols-3 gap-2 mt-6 md:ml-6 relative">
-          <Image
-            src="/greenflower.png"
-            alt="Green Flower veemade"
-            height={100}
-            width={100}
-            className="hidden md:block w-[100px] absolute -right-24 top-1/2  animate-spin-slow"
-          />
-          {times.map((time) => {
-            const isFullyBooked = (takenSlots[time] || 0) >= 2;
-            return (
-              <button
-                key={time}
-                onClick={() => setTime(time)}
-                disabled={isFullyBooked}
-                className={`p-2 rounded border transition duration-200 font-cinzel 
-                  ${selectedTime === time ? 'bg-[#223728] text-white' : ''}
-                  ${isFullyBooked ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-[#291F19] '}
-                `}
-              >
-                {time}
-              </button>
-            );
-          })}
-        </div>
+            {/* Time slots skeleton */}
+            <div className="grid grid-cols-3 gap-2 mt-6 md:ml-6 relative">
+              {[...Array(9)].map((_, idx) => (
+                <Skeleton
+  key={idx}
+  height={40}
+  width={90}
+  borderRadius={8}
+  baseColor="rgba(34, 55, 40, 0.25)"
+  highlightColor="rgba(255, 255, 255, 0.05)"
+/>
+
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="max-w-md flex justify-center md:mt-6 relative z-20">
+              <DatePicker
+                selected={date}
+                onChange={(d) => setDateInput(d)}
+                inline
+                calendarClassName="custom-calendar"
+                dayClassName={(d) =>
+                  date && d.toDateString() === date.toDateString() ? 'selected-day' : ''
+                }
+              />
+              <Image
+                src="/sunflower.png"
+                alt="Sunflower"
+                height={100}
+                width={100}
+                className="block w-[150px] md:w-[200px] absolute -left-8 md:-left-24 -z-10"
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 mt-6 md:ml-6 relative">
+              <Image
+                src="/greenflower.png"
+                alt="Green Flower veemade"
+                height={100}
+                width={100}
+                className="hidden md:block w-[100px] absolute -right-24 top-1/2 animate-spin-slow"
+              />
+              {times.map((time) => {
+                const isFullyBooked = (takenSlots[time] || 0) >= 2;
+                return (
+                  <button
+                    key={time}
+                    onClick={() => setTime(time)}
+                    disabled={isFullyBooked}
+                    className={`p-2 rounded border transition duration-200 font-cinzel 
+                      ${selectedTime === time ? 'bg-[#223728] text-white' : ''}
+                      ${isFullyBooked ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-[#291F19] '}
+                    `}
+                  >
+                    {time}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="mt-10 text-center">
-        <button
-          className="bg-[#223728] text-white px-6 py-2 rounded transition duration-300 ease-in-out hover:bg-[#291F19] font-cinzel"
-          onClick={handleProceed}
-        >
-          Proceed to Checkout
-        </button>
-      </div>
+      {!loading && (
+        <div className="mt-10 text-center">
+          <button
+            className="bg-[#223728] text-white px-6 py-2 rounded transition duration-300 ease-in-out hover:bg-[#291F19] font-cinzel"
+            onClick={handleProceed}
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      )}
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
