@@ -3,6 +3,7 @@ import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Toaster } from 'react-hot-toast';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 export const metadata = {
   title: 'Vee Made It',
@@ -32,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Footer at the bottom */}
           <Footer />
         </div>
+
+         <WhatsAppButton />
 
         {/* Toast notifications */}
         <Toaster

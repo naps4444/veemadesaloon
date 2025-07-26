@@ -134,7 +134,7 @@ router.push(`/receipt/${response.reference}`);
     className=" pt-[120px] pb-[120px] md:pb-[60px] bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752259396/black-wooden-wall_onadlw.jpg')] bg-cover bg-no-repeat bg-center   2xl:container mx-auto"
   >
 
-    <div className='bg-[#373522c4] rounded-lg shadow-lg md:grid md:grid-cols-2 md:justify-between w-10/12 md:w-10/12 mx-auto py-10'>
+    <div className='bg-[#373522c4] rounded-lg shadow-lg md:grid md:grid-cols-2 md:justify-between md:gap-5 w-10/12 md:w-8/12 mx-auto py-10'>
     <div className='md:flex md:justify-end'>
       <div className='md:w-10/12 py-4 '>
 
@@ -178,41 +178,54 @@ router.push(`/receipt/${response.reference}`);
       
     </div>
 
-      <div className='relative md:mt-0 mt-20 md:flex md:justify-start md:items-center'>
-        <div className=' '>
-              <div className='md:flex md:justify-between md:w-[300px] md:mx-auto md:mt-0 text-center'>
-        <p className="mt-4 md:mt-0 font-cinzel">
-        Date: <strong>{selectedDate || 'Not selected'}</strong>
-      </p>
-      <p className="mt-2 md:mt-0 font-cinzel">
-        Time: <strong>{selectedTime || 'Not selected'}</strong>
-      </p>
-          
-      
-      </div>
-      
 
-      {(!selectedDate || !selectedTime) && (
-        <div className="mt-2 font-dancing-script mx-auto text-center">
-          <Link href="/booking" className="text-[#B19D60] underline text-sm">
+
+
+      <div className='relative md:mt-0 mt-4 md:flex md:justify-start md:items-center'>
+        <div className='mx-auto'>
+              {(selectedDate || selectedTime) && (
+  <div className='md:flex md:justify-between md:w-[300px] md:mx-auto md:mt-0 text-center'>
+    <p className="mt-4 md:mt-0 font-cinzel">
+      Date: <strong>{selectedDate || 'Not selected'}</strong>
+    </p>
+    <p className="mt-2 md:mt-0 font-cinzel">
+      Time: <strong>{selectedTime || 'Not selected'}</strong>
+    </p>
+  </div>
+)}
+
+      <div className="relative h-40 w-full flex items-center justify-center">
+  {(!selectedDate || !selectedTime) && (
+        <div className="mt-2 font-dancing-script mx-auto text-center w-full flex justify-center items-center">
+          <Link href="/booking" className="text-[#B19D60] underline text-sm mx-auto">
             Select Date & Time
           </Link>
         </div>
       )}
 
-      <div className="mt-4 md:mt-6 font-cormorant-upright flex flex-col  mx-auto items-center">
-        <h2 className="text-lg mt-2 font-semibold ">Your Details:</h2>
+</div>
 
-        <div className='xl:flex  xl:justify-between lg:gap-3  w-10/12 lg:w-11/12 xl:items-center  mx-auto text-center font-lucida-bright bg-[#223728] rounded-lg px-14 xl:px-20 py-3 mt-2 '>
-        <p className="whitespace-nowrap">
-  Name: <strong>{name || 'Not provided'}</strong>
-</p>
 
-        <p className="whitespace-nowrap">Email: <strong>{email || 'Not provided'}</strong></p>
-        <p className="whitespace-nowrap">Phone: <strong>{phone || 'Not provided'}</strong></p>
-        </div>
-       
-      </div>
+      
+     {(name || email || phone) && (
+  <div className="mt-4 md:mt-6 font-cormorant-upright flex flex-col mx-auto items-center">
+    <h2 className="text-lg mt-2 font-semibold">Your Details:</h2>
+
+    <div className="flex flex-col justify-between lg:gap-2 w-10/12 lg:w-11/12 xl:items-center mx-auto text-center font-lucida-bright bg-[#223728] rounded-lg px-14 xl:px-20 py-3 mt-2">
+      <p className="whitespace-nowrap">
+        Name: <strong>{name || 'Not provided'}</strong>
+      </p>
+      <p className="whitespace-nowrap">
+        Email: <strong>{email || 'Not provided'}</strong>
+      </p>
+      <p className="whitespace-nowrap">
+        Phone: <strong>{phone || 'Not provided'}</strong>
+      </p>
+    </div>
+  </div>
+)}
+
+
         </div>
 
         </div>

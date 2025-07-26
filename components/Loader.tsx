@@ -1,21 +1,17 @@
-// components/Loader.tsx
 'use client';
 
 import React from 'react';
-import { RotatingLines } from 'react-loader-spinner';
+
 
 const Loader = () => {
   return (
-    <div className="fixed top-0 left-0 z-[9999] w-full h-full flex items-center justify-center bg-black bg-opacity-70">
-    <RotatingLines
-  visible={true}
-  strokeColor="#223728"
-  strokeWidth="5"
-  animationDuration="0.75"
-  ariaLabel="rotating-lines-loading"
-  width="96"
-/>
-
+    <div className="fixed top-0 left-0 z-[9999] w-full h-full flex items-center justify-center bg-black ">
+      <div className="sk-folding-cube">
+        <div className="sk-cube1 sk-cube"></div>
+        <div className="sk-cube2 sk-cube"></div>
+        <div className="sk-cube4 sk-cube"></div>
+        <div className="sk-cube3 sk-cube"></div>
+      </div>
     </div>
   );
 };

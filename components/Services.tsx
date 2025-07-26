@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import { toast } from 'react-hot-toast';
+import { useState } from 'react';
 
 const allServices = [
   { id: 1, name: "Massage Chair Session", price: 5000 },
@@ -29,6 +30,7 @@ const allServices = [
 ];
 
 const Services = () => {
+  const [bookingLoading, setBookingLoading] = useState(false); // ✅ Moved here
   const router = useRouter();
   const { selectedServices, addService, removeService } = useCartStore();
 
@@ -41,15 +43,17 @@ const Services = () => {
     }
   };
 
- const handleBookNow = () => {
-  if (selectedServices.length === 0) {
-    toast.error('Please select at least one service.');
-    return;
-  }
-  router.push('/booking');
-};
+  const handleBookNow = () => {
+    if (selectedServices.length === 0) {
+      toast.error('Please select at least one service.');
+      return;
+    }
 
-
+    setBookingLoading(true);
+    setTimeout(() => {
+      router.push('/booking');
+    }, 800); // optional delay for feedback
+  };
 
   const firstHalf = allServices.slice(0, 10);
   const secondHalf = allServices.slice(10);
@@ -107,9 +111,12 @@ const Services = () => {
           <div className="flex justify-center">
             <button
               onClick={handleBookNow}
-              className="w-4/12 mx-auto bg-[#B19D60] text-white py-[2px] md:py-[4px] mt-4 md:mt-8 transition-transform duration-300 hover:scale-105 font-cormorant-upright"
+              disabled={bookingLoading}
+              className={`w-4/12 mx-auto bg-[#B19D60] text-white py-[2px] md:py-[4px] mt-4 md:mt-8 
+                transition-transform duration-300 font-cormorant-upright 
+                ${bookingLoading ? 'opacity-60 cursor-not-allowed' : 'hover:scale-105'}`}
             >
-              Book Now
+              {bookingLoading ? 'Processing...' : 'Book Now'}
             </button>
           </div>
         </div>
