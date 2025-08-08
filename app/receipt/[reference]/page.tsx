@@ -1,13 +1,18 @@
-// app/receipt/[reference]/page.tsx
+// File: app/receipt/[reference]/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import Loader from '@/components/Loader'; // NEW: Import the Loader component
 
+// UPDATED: The interface now matches the data from your Mongoose model.
 interface Service {
-  name: string;
+  id: string;
+  variationId: string;
+  serviceName: string;
+  variationName: string;
   price: number;
 }
 
@@ -20,10 +25,14 @@ const ReceiptPage = () => {
   useEffect(() => {
     const fetchBooking = async () => {
       try {
+        // Ensure the API call is to the correct endpoint
         const res = await fetch(`/api/bookings/by-reference?ref=${reference}`);
         const data = await res.json();
         if (data.success) {
           setBooking(data.booking);
+        } else {
+          // Log specific backend error for debugging
+          console.error('API responded with error:', data.message);
         }
       } catch (err) {
         console.error('Failed to load booking:', err);
@@ -36,15 +45,27 @@ const ReceiptPage = () => {
   }, [reference]);
 
   const downloadPDF = async () => {
+    if (!booking) {
+      console.error("Booking data not available for PDF generation.");
+      return;
+    }
+
+    setLoading(true); // NEW: Enable loader while generating the PDF
+
     // Convert public logo.png to base64
     const toBase64 = async (url: string) => {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      return new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.readAsDataURL(blob);
-      });
+      try {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+      } catch (e) {
+        console.error('Failed to load logo:', e);
+        return ''; // Return an empty string on error
+      }
     };
 
     const logoBase64 = await toBase64('/logo.png');
@@ -52,7 +73,10 @@ const ReceiptPage = () => {
     const doc = new jsPDF();
 
     // Add logo watermark (light and centered)
-    doc.addImage(logoBase64, 'PNG', 10, 10, 200, 200, '', 'FAST');
+    if (logoBase64) {
+      doc.addImage(logoBase64, 'PNG', 10, 10, 200, 200, '', 'FAST');
+    }
+    
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(16);
@@ -65,10 +89,11 @@ const ReceiptPage = () => {
     doc.text(`Date: ${new Date(booking?.date).toLocaleDateString()}`, 20, 62);
     doc.text(`Time Slot: ${booking?.timeSlot}`, 20, 70);
 
+    // UPDATED: Correctly map the service data for the table
     autoTable(doc, {
       startY: 80,
-      head: [['Service', 'Price']],
-      body: booking.services.map((s: Service) => [s.name, `₦${s.price.toLocaleString()}`]),
+      head: [['Service', 'Variation', 'Price']],
+      body: booking.services.map((s: Service) => [s.serviceName, s.variationName, `₦${s.price.toLocaleString()}`]),
       theme: 'grid',
       headStyles: { fillColor: [34, 55, 40] },
       styles: { fontSize: 11 },
@@ -79,9 +104,10 @@ const ReceiptPage = () => {
     doc.text(`Total: ₦${booking?.total.toLocaleString()}`, 20, finalY);
 
     doc.save(`receipt-${reference}.pdf`);
+    setLoading(false); // NEW: Disable loader after PDF is generated and downloaded
   };
 
-  if (loading) return <p className="text-center mt-10">Loading receipt...</p>;
+  if (loading) return <Loader />; // NEW: Use the Loader component
   if (!booking) return <p className="text-center mt-10 text-red-500">Booking not found</p>;
 
   return (
@@ -104,7 +130,8 @@ const ReceiptPage = () => {
         <ul className="text-sm space-y-2">
           {booking.services.map((service: Service, index: number) => (
             <li key={index} className="flex justify-between">
-              <span>{service.name}</span>
+              {/* UPDATED: Display serviceName and variationName */}
+              <span>{service.serviceName} ({service.variationName})</span>
               <span>₦{service.price.toLocaleString()}</span>
             </li>
           ))}

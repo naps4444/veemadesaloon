@@ -1,29 +1,22 @@
-// lib/mongoose.ts
+// File: lib/mongoose.ts
+import mongoose from "mongoose";
 
-import mongoose from 'mongoose';
+const uri = process.env.DATABASE_URL!;
+if (!uri) throw new Error("Please define DATABASE_URL in .env.local");
 
-const DATABASE_URL = process.env.DATABASE_URL!;
+let isConnected = false;
 
-if (!DATABASE_URL) {
-  throw new Error('Please define the DATABASE_URL environment variable');
-}
+export async function dbConnect() {
+  if (isConnected) return;
 
-// Cache the connection in global to prevent re-connecting during hot reloads in development
-let cached = (global as any).mongoose || { conn: null, promise: null };
-
-async function dbConnect() {
-  if (cached.conn) return cached.conn;
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(DATABASE_URL, {
-      bufferCommands: false,
-    }).then((mongoose) => mongoose);
+  try {
+    await mongoose.connect(uri, {
+      dbName: "veemadeit",
+    });
+    isConnected = true;
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+    throw err;
   }
-
-  cached.conn = await cached.promise;
-  (global as any).mongoose = cached;
-
-  return cached.conn;
 }
-
-export default dbConnect;

@@ -1,5 +1,6 @@
+// File: app/api/bookings/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongoose';
+import { dbConnect } from '@/lib/mongoose';
 import Booking from '@/models/Booking';
 
 // GET /api/bookings?date=YYYY-MM-DD
@@ -36,17 +37,27 @@ export async function GET(req: NextRequest) {
 }
 
 // POST /api/bookings
-// Trigger this after successful Paystack confirmation
 export async function POST(req: NextRequest) {
   await dbConnect();
 
   try {
     const body = await req.json();
-    const { name, email, phone, services, reference, total, date, timeSlot } = body;
+    // UPDATED: Now destructuring the newsletterOptOut field from the body
+    const { name, email, phone, services, reference, total, date, timeSlot, newsletterOptOut } = body;
+    
+    console.log('Received payload:', body);
 
-    if (!name || !email || !phone || !services || !reference || !total || !date || !timeSlot) {
+    // UPDATED: Added newsletterOptOut to the validation check
+    if (!name || !email || !phone || !services || !reference || !total || !date || !timeSlot || typeof newsletterOptOut === 'undefined') {
       return NextResponse.json(
         { success: false, message: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+    
+    if (!Array.isArray(services) || services.length === 0) {
+      return NextResponse.json(
+        { success: false, message: 'Services must be a non-empty array' },
         { status: 400 }
       );
     }
@@ -67,6 +78,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // UPDATED: Passing the newsletterOptOut field to the new Booking
     const newBooking = await Booking.create({
       name,
       email,
@@ -76,12 +88,13 @@ export async function POST(req: NextRequest) {
       total,
       date: selectedDate,
       timeSlot,
+      newsletterOptOut, // Added new field
       status: 'confirmed'
     });
 
     return NextResponse.json({ success: true, booking: newBooking }, { status: 201 });
-  } catch (error) {
-    console.error('[POST] Booking error:', error);
+  } catch (error: any) {
+    console.error('[POST] Booking error:', error.message, error.stack);
     return NextResponse.json(
       { success: false, message: 'Internal Server Error' },
       { status: 500 }

@@ -16,10 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <Script src="https://js.paystack.co/v1/inline.js" strategy="beforeInteractive" />
         <Script
-  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
-  type="module"
-/>
-
+          src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
+          type="module"
+          crossOrigin="anonymous" // This is the fix for the cross-origin error
+        />
       </head>
       <body className="bg-black text-white border-[#291f1993]">
         {/* Layout container with full height */}
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </div>
 
-         <WhatsAppButton />
+        <WhatsAppButton />
 
         {/* Toast notifications */}
         <Toaster

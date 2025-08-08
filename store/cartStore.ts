@@ -1,20 +1,35 @@
 import { create } from 'zustand';
-import { Service } from '@/types/service';
+
+// Define the CartItem type to match the object you're creating in the frontend.
+// This is what will be stored in the cart.
+export interface CartItem {
+  id: string; // A unique ID for the selected variation (e.g., `${service.id}-${variation.id}`)
+  serviceId: string;
+  variationId: string;
+  serviceName: string;
+  variationName: string;
+  price: number;
+}
 
 interface CartState {
-  selectedServices: Service[];
+  selectedServices: CartItem[]; // Changed to an array of CartItem
   selectedDate: string | null;
   selectedTime: string | null;
   name: string;
   email: string;
   phone: string;
-  addService: (service: Service) => void;
+  newsletterOptOut: boolean;
+  selectedCategory: string | null; // NEW: Added state for the selected category
+
+  addService: (item: CartItem) => void;
   removeService: (id: string) => void;
   setDate: (date: string) => void;
   setTime: (time: string) => void;
   setName: (name: string) => void;
   setEmail: (email: string) => void;
   setPhone: (phone: string) => void;
+  setNewsletterOptOut: (optOut: boolean) => void;
+  setSelectedCategory: (category: string | null) => void; // NEW: Added setter for the category
   clearCart: () => void;
 }
 
@@ -25,15 +40,13 @@ export const useCartStore = create<CartState>((set) => ({
   name: '',
   email: '',
   phone: '',
+  newsletterOptOut: false,
+  selectedCategory: null, // NEW: Initialized category state
 
-  addService: (service) =>
-    set((state) => {
-      const exists = state.selectedServices.some((s) => s.id === service.id);
-      if (exists) return state; // Prevent duplicates
-      return {
-        selectedServices: [...state.selectedServices, service],
-      };
-    }),
+  addService: (item) =>
+    set((state) => ({
+      selectedServices: [...state.selectedServices, item],
+    })),
 
   removeService: (id) =>
     set((state) => ({
@@ -45,6 +58,8 @@ export const useCartStore = create<CartState>((set) => ({
   setName: (name) => set({ name }),
   setEmail: (email) => set({ email }),
   setPhone: (phone) => set({ phone }),
+  setNewsletterOptOut: (optOut) => set({ newsletterOptOut: optOut }),
+  setSelectedCategory: (category) => set({ selectedCategory: category }), // NEW: Setter for the selected category
 
   clearCart: () =>
     set({
@@ -54,5 +69,7 @@ export const useCartStore = create<CartState>((set) => ({
       name: '',
       email: '',
       phone: '',
+      newsletterOptOut: false,
+      selectedCategory: null,
     }),
 }));

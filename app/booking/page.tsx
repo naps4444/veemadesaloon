@@ -2,7 +2,7 @@
 
 import { useCartStore } from '@/store/cartStore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
@@ -23,7 +23,8 @@ export default function Booking() {
     setTime,
     setName,
     setEmail,
-    setPhone
+    setPhone,
+    setNewsletterOptOut: setStoreNewsletterOptOut, // New setter for the newsletter store state
   } = useCartStore();
 
   const [takenSlots, setTakenSlots] = useState<{ [key: string]: number }>({});
@@ -32,8 +33,30 @@ export default function Booking() {
   const [tempName, setTempName] = useState('');
   const [tempEmail, setTempEmail] = useState('');
   const [tempPhone, setTempPhone] = useState('');
+  const [newsletterOptOut, setNewsletterOptOut] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  // New: A ref to the modal content div
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // New: Effect to close the modal when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // Check if the click is outside the modal content and the modal is visible
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setShowModal(false);
+      }
+    }
+    // Add event listener when the modal is shown
+    if (showModal) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    // Clean up the event listener when the component unmounts or the modal closes
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showModal]);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
@@ -84,9 +107,11 @@ export default function Booking() {
 
     const formattedDate = date?.toLocaleDateString('en-CA') || '';
     setDate(formattedDate);
+    setTime(selectedTime || '');
     setName(tempName.trim());
     setEmail(tempEmail.trim());
     setPhone(tempPhone.trim());
+    setStoreNewsletterOptOut(newsletterOptOut); // Set the newsletter state in the Zustand store
     setShowModal(false);
     router.push('/checkout');
   };
@@ -114,14 +139,13 @@ export default function Booking() {
             <div className="grid grid-cols-3 gap-2 mt-6 md:ml-6 relative">
               {[...Array(9)].map((_, idx) => (
                 <Skeleton
-  key={idx}
-  height={40}
-  width={90}
-  borderRadius={8}
-  baseColor="rgba(34, 55, 40, 0.25)"
-  highlightColor="rgba(255, 255, 255, 0.05)"
-/>
-
+                  key={idx}
+                  height={40}
+                  width={90}
+                  borderRadius={8}
+                  baseColor="rgba(34, 55, 40, 0.25)"
+                  highlightColor="rgba(255, 255, 255, 0.05)"
+                />
               ))}
             </div>
           </>
@@ -187,16 +211,16 @@ export default function Booking() {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white p-6 rounded shadow-md w-[90%] max-w-sm relative">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40  z-50">
+          <div className="bg-white p-6 rounded shadow-md w-[90%] font-bold max-w-sm relative bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1754640483/602b8b48-bc1d-47c4-a6cf-8ea1581b315b_llmn7d.jpg')] bg-cover bg-center" ref={modalRef}>
             <Image
-              src="/modrose.png"
+              src="/mod2.png"
               height={100}
-              width={100}
+              width={110}
               alt="veemade rose"
-              className="absolute top-2 -right-1"
+              className="absolute -top-6 right-8 rotate-[270deg]"
             />
-            <h2 className="text-lg font-semibold mb-4 font-croissant-one text-[#223728]">Enter your details</h2>
+            <h2 className="text-lg font-semibold mb-4 font-croissant-one text-[#000000] pl-2">Enter your details</h2>
 
             <input
               type="text"
@@ -219,6 +243,20 @@ export default function Booking() {
               onChange={(e) => setTempPhone(e.target.value)}
               className="w-full mb-4 p-2 border rounded placeholder-[#223728] font-cormorant-upright outline-none text-[#223728]"
             />
+
+            {/* NEW: Checkbox for newsletter opt-out */}
+            <div className="mb-4 flex items-center bg-white">
+              <input
+                type="checkbox"
+                id="newsletter-opt-out"
+                checked={newsletterOptOut}
+                onChange={(e) => setNewsletterOptOut(e.target.checked)}
+                className="mr-2"
+              />
+              <label htmlFor="newsletter-opt-out" className="text-sm text-[#132017] font-bold font-cormorant-upright">
+                Tick if you don't want to receive our newsletter
+              </label>
+            </div>
 
             <div className="flex justify-end gap-2">
               <button
