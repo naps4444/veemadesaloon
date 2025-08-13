@@ -123,7 +123,7 @@ export default function CheckoutPage() {
       // Generate WhatsApp message including date and time
       let message = `Hello, I'd like to inquire about the prices for the following services I've added to my cart:\n\n` +
                     `Date: ${selectedDate || 'Not selected'}\n` +
-                    `Time: ${selectedTime || 'Not selected'}\n\n`; // ✨ Added date and time
+                    `Time: ${selectedTime || 'Not selected'}\n\n`;
 
       selectedServices.forEach((item, index) => {
         message += `${index + 1}. ${item.serviceName} - ${item.variationName}`;
@@ -142,7 +142,7 @@ export default function CheckoutPage() {
       
       setIsLoading(true); // Show loading state briefly
       setTimeout(() => {
-        window.open(whatsappUrl, '_blank'); // Open in new tab
+        window.location.href = whatsappUrl; // Changed to window.location.href
         setIsLoading(false);
       }, 1000); // Small delay for visual feedback
       
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
       <div
         className="pt-[120px] pb-[120px] md:pb-[60px] bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752259396/black-wooden-wall_onadlw.jpg')] bg-cover bg-no-repeat bg-center 2xl:container mx-auto"
       >
-        <div className='bg-[#373522c4] rounded-lg shadow-lg md:grid md:grid-cols-2 md:justify-between md:gap-5 w-10/12 md:w-8/12 mx-auto py-10'>
+        <div className='bg-[#373522c4] rounded-lg shadow-lg md:grid md:grid-cols-2 md:justify-between md:gap-5 w-10/12 md:w-10/12 mx-auto py-10'>
           <div className='md:flex md:justify-end'>
             <div className='md:w-10/12 py-4 '>
               <h1 className="text-xl font-semibold mb-4 font-croissant-one text-center ">Booking Summary</h1>
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
                     >
                       <span>
                         {s.serviceName} ({s.variationName}) -{' '}
-                        {s.price === 0 ? ( // Display "Ask for price" here as well
+                        {s.price === 0 ? (
                           <span className="text-yellow-400">Ask for price</span>
                         ) : (
                           `₦${s.price.toLocaleString()}`
@@ -206,24 +206,24 @@ export default function CheckoutPage() {
               <p className="mt-4 font-bold font-cinzel text-center">
                 Total:{' '}
                 {total === 0 && selectedServices.some(s => s.price === 0) ? (
-                  <span className="text-yellow-400">Inquire for Price</span> // If total is 0 because of unpriced services
+                  <span className="text-yellow-400">Inquire for Price</span>
                 ) : (
-                  `₦${total.toLocaleString()}` // Display total if all services have prices
+                  `₦${total.toLocaleString()}`
                 )}
               </p>
               <button
                 onClick={pay}
-                disabled={selectedServices.length === 0 || !paystackReady} // Disable if no services or Paystack not ready
+                disabled={selectedServices.length === 0 || !paystackReady}
                 className="mt-6 bg-[#223728] text-white px-6 mx-auto py-2 rounded disabled:opacity-50 block font-cinzel"
               >
-                {paystackReady ? 'Proceed' : 'Loading...'} {/* Changed text from 'Pay Now' to 'Proceed' */}
+                {paystackReady ? 'Proceed' : 'Loading...'}
               </button>
             </div>
           </div>
           <div className='relative md:mt-0 mt-4 md:flex md:justify-start md:items-center'>
             <div className='mx-auto'>
               {(selectedDate || selectedTime) && (
-                <div className='md:flex md:justify-between md:w-[300px] md:mx-auto md:mt-0 text-center'>
+                <div className='md:flex md:justify-between md:w-[260px] md:mx-auto md:mt-0 text-center'>
                   <p className="mt-4 md:mt-0 font-cinzel">
                     Date: <strong>{selectedDate || 'Not selected'}</strong>
                   </p>
@@ -244,14 +244,14 @@ export default function CheckoutPage() {
               {(name || email || phone) && (
                 <div className="mt-4 md:mt-6 font-cormorant-upright flex flex-col mx-auto items-center">
                   <h2 className="text-lg mt-2 font-semibold">Your Details:</h2>
-                  <div className="flex flex-col justify-between lg:gap-2 w-10/12 lg:w-11/12 xl:items-center mx-auto text-center font-lucida-bright bg-[#223728] rounded-lg px-14 xl:px-20 py-3 mt-2">
-                    <p className='whitespace-nowrap'>
+                  <div className="flex flex-col justify-between lg:gap-2 w-10/12 lg:w-11/12  mx-auto text-start font-lucida-bright bg-[#223728] rounded-lg px-6 xl:px-14 py-3 mt-2">
+                    <p className='md:whitespace-normal break-words'> {/* ✨ Added break-words */}
                       Name: <strong>{name || 'Not provided'}</strong>
                     </p>
-                    <p className='whitespace-nowrap'>
+                    <p className='md:whitespace-normal break-words mt-2'> {/* ✨ Added break-words */}
                       Email: <strong>{email || 'Not provided'}</strong>
                     </p>
-                    <p className='whitespace-nowrap'>
+                    <p className='md:whitespace-normal break-words mt-2'> {/* ✨ Added break-words */}
                       Phone: <strong>{phone || 'Not provided'}</strong>
                     </p>
                     {/* NEW: Display newsletter preference */}
