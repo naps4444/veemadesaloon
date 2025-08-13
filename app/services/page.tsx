@@ -11,6 +11,7 @@ import { toast } from 'react-hot-toast';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
 
+// Using the latest types/service.ts, which define _id
 import type { Category, Service, Variation, CartItem } from '@/types/service';
 
 const ITEMS_PER_PAGE = 4;
@@ -83,11 +84,13 @@ export default function ServicesPage() {
     setIsSidebarOpen(false);
   }, [setSelectedCategory]);
 
+  // isSelected should now use variation._id for comparison
   const isSelected = (variationId: string) =>
     selectedServices.some((s) => s.variationId === variationId);
 
   const toggleVariation = (service: Service, variation: Variation) => {
-    const cartItemId = `${service.id}-${variation.id}`;
+    // Correctly use _id for service and variation
+    const cartItemId = `${service._id}-${variation._id}`;
     const existingItem = selectedServices.find((item) => item.id === cartItemId);
     
     if (existingItem) {
@@ -95,8 +98,8 @@ export default function ServicesPage() {
     } else {
       const cartItem: CartItem = {
         id: cartItemId,
-        serviceId: service.id,
-        variationId: variation.id,
+        serviceId: service._id,     // Use service._id
+        variationId: variation._id, // Use variation._id
         serviceName: service.name,
         variationName: variation.name,
         price: variation.price,
@@ -169,7 +172,7 @@ export default function ServicesPage() {
                 {Array(ITEMS_PER_PAGE)
                   .fill(0)
                   .map((_, i) => (
-                    <div key={i} className="p-4 bg-[#223728] rounded space-y-2">
+                    <div key={`skeleton-${i}`} className="p-4 bg-[#223728] rounded space-y-2">
                       <Skeleton height={20} width="60%" />
                       <Skeleton height={15} width="80%" />
                       <Skeleton height={25} width="40%" />
@@ -178,14 +181,14 @@ export default function ServicesPage() {
               </div>
             ) : (
               categories.map((category) => (
-                <div key={category.id}>
+                <div key={category._id}>
                   <h3 className="text-white text-xl font-bold mt-8 mb-4">
                     {category.name}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4 font-cinzel-decorative">
                     {category.services.map((service) => (
                       <ServiceCard
-                        key={service.id}
+                        key={service._id}
                         service={service}
                         selectedServices={selectedServices}
                         toggleVariation={toggleVariation}

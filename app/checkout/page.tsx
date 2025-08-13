@@ -15,6 +15,9 @@ declare global {
   }
 }
 
+// Define your WhatsApp number here, same as ServicesPage for consistency
+const WHATSAPP_NUMBER = '2349036682394'; // ✨ IMPORTANT: Replace with your actual WhatsApp number
+
 export default function CheckoutPage() {
   const {
     selectedServices,
@@ -32,7 +35,8 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false); // NEW: Add a loading state
   const router = useRouter();
 
-  const total = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  // Calculate total, ignoring services with price 0 for payment
+  const total = selectedServices.reduce((sum, s) => (s.price > 0 ? sum + s.price : sum), 0);
 
   useEffect(() => {
     const loadPaystack = () => {
@@ -67,7 +71,7 @@ export default function CheckoutPage() {
           email,
           phone,
           services: selectedServices,
-          total,
+          total, // This total only includes priced services
           date: selectedDate,
           timeSlot: selectedTime,
           newsletterOptOut,
@@ -112,12 +116,47 @@ export default function CheckoutPage() {
       return;
     }
 
-    setIsLoading(true); // NEW: Enable the loader when payment is initiated
+    // Check for services without a price
+    const servicesWithoutPrice = selectedServices.filter(item => item.price === 0);
+
+    if (servicesWithoutPrice.length > 0) {
+      // Generate WhatsApp message including date and time
+      let message = `Hello, I'd like to inquire about the prices for the following services I've added to my cart:\n\n` +
+                    `Date: ${selectedDate || 'Not selected'}\n` +
+                    `Time: ${selectedTime || 'Not selected'}\n\n`; // ✨ Added date and time
+
+      selectedServices.forEach((item, index) => {
+        message += `${index + 1}. ${item.serviceName} - ${item.variationName}`;
+        if (item.price === 0) {
+          message += " (Price Inquiry)";
+        } else {
+          message += ` (₦${item.price.toLocaleString()})`;
+        }
+        message += "\n";
+      });
+      message += "\nCould you please provide more details?";
+
+      // Encode the message for URL and redirect to WhatsApp
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+      
+      setIsLoading(true); // Show loading state briefly
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank'); // Open in new tab
+        setIsLoading(false);
+      }, 1000); // Small delay for visual feedback
+      
+      toast.success('Redirecting to WhatsApp for price inquiry!');
+      return; // Stop the function here, do not proceed to Paystack
+    }
+
+    // Only proceed to Paystack if all selected services have a price > 0
+    setIsLoading(true); // Enable the loader when payment is initiated
 
     const handler = window.PaystackPop.setup({
       key: process.env.NEXT_PUBLIC_PAYSTACK_KEY || '',
       email: email || 'customer@example.com',
-      amount: total * 100,
+      amount: total * 100, // Paystack amount is in kobo/centavos
       currency: 'NGN',
       callback: (response: any) => handlePaystackCallback(response),
       onClose: handlePaystackClose,
@@ -128,7 +167,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {isLoading && <Loader />} {/* NEW: Conditionally render the loader */}
+      {isLoading && <Loader />} {/* Conditionally render the loader */}
       <div
         className="pt-[120px] pb-[120px] md:pb-[60px] bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752259396/black-wooden-wall_onadlw.jpg')] bg-cover bg-no-repeat bg-center 2xl:container mx-auto"
       >
@@ -146,7 +185,12 @@ export default function CheckoutPage() {
                       className="flex justify-between items-center border-b font-cormorant-upright pb-2"
                     >
                       <span>
-                        {s.serviceName} ({s.variationName}) - ₦{s.price}
+                        {s.serviceName} ({s.variationName}) -{' '}
+                        {s.price === 0 ? ( // Display "Ask for price" here as well
+                          <span className="text-yellow-400">Ask for price</span>
+                        ) : (
+                          `₦${s.price.toLocaleString()}`
+                        )}
                       </span>
                       <button
                         onClick={() => removeService(s.id)}
@@ -159,13 +203,20 @@ export default function CheckoutPage() {
                   ))}
                 </ul>
               )}
-              <p className="mt-4 font-bold font-cinzel text-center">Total: ₦{total}</p>
+              <p className="mt-4 font-bold font-cinzel text-center">
+                Total:{' '}
+                {total === 0 && selectedServices.some(s => s.price === 0) ? (
+                  <span className="text-yellow-400">Inquire for Price</span> // If total is 0 because of unpriced services
+                ) : (
+                  `₦${total.toLocaleString()}` // Display total if all services have prices
+                )}
+              </p>
               <button
                 onClick={pay}
-                disabled={selectedServices.length === 0 || !paystackReady}
+                disabled={selectedServices.length === 0 || !paystackReady} // Disable if no services or Paystack not ready
                 className="mt-6 bg-[#223728] text-white px-6 mx-auto py-2 rounded disabled:opacity-50 block font-cinzel"
               >
-                {paystackReady ? 'Pay Now' : 'Loading...'}
+                {paystackReady ? 'Proceed' : 'Loading...'} {/* Changed text from 'Pay Now' to 'Proceed' */}
               </button>
             </div>
           </div>

@@ -8,7 +8,7 @@ interface ServiceCardProps {
   service: Service;
   selectedServices: CartItem[]; // Correctly typed as CartItem[]
   toggleVariation: (service: Service, variation: Variation) => void;
-  isSelected: (variationId: string) => boolean; // The missing prop
+  isSelected: (variationId: string) => boolean; // The prop's argument will now be variation._id
 }
 
 export default function ServiceCard({
@@ -24,24 +24,27 @@ export default function ServiceCard({
         {service.variations.length > 0 ? (
           service.variations.map((variation) => (
             <div
-              key={variation.id}
+              key={variation._id} // Using _id for the key
               className="flex items-center justify-between cursor-pointer"
               onClick={() => toggleVariation(service, variation)}
             >
               <div className="flex-1">
                 <p className="text-sm">{variation.name}</p>
                 <p className="text-xs text-gray-400">
-                  ₦{variation.price.toLocaleString()}
+                  {/* Display "Ask for price on WhatsApp" if price is 0 */}
+                  {variation.price === 0 ? (
+                    <span className="text-yellow-400">Ask for price on WhatsApp</span>
+                  ) : (
+                    `₦${variation.price.toLocaleString()}`
+                  )}
                 </p>
               </div>
               <div
                 className={`w-6 h-6 rounded border-2 border-white flex items-center justify-center transition-colors duration-200 ${
-                  // Use the new isSelected prop here
-                  isSelected(variation.id) ? 'bg-white' : 'bg-transparent'
+                  isSelected(variation._id) ? 'bg-white' : 'bg-transparent' // Using variation._id
                 }`}
               >
-                {/* Use the new isSelected prop here */}
-                {isSelected(variation.id) && (
+                {isSelected(variation._id) && ( // Using variation._id
                   <FaCheck
                     className="text-[#223728]"
                     size={14}

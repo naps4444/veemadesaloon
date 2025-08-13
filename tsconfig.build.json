@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false, // Allow 'tsc' to emit declaration files if needed for other purposes, but primarily for type checking
+    "emitDeclarationOnly": true, // Only emit declaration files, no JS output
+    "declaration": true, // Generate .d.ts files
+    "outDir": "./dist-types" // Output declaration files to a temporary directory
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules", // Re-add exclude for this specific type-check if 'include' is broad
+    "**/*.spec.ts" // Exclude test files, etc.
+  ]
+}

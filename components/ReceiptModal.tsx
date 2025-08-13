@@ -1,7 +1,12 @@
 'use client';
 
 import React, { RefObject } from 'react';
-import { Service } from '@/types/service';
+// Assuming the data passed to the services prop has this structure.
+interface ReceiptService {
+  id: string;
+  name: string;
+  price: number;
+}
 
 interface ReceiptModalProps {
   isOpen: boolean;
@@ -12,9 +17,9 @@ interface ReceiptModalProps {
   phone: string;
   date: string | null;
   time: string | null;
-  services: Service[];
+  services: ReceiptService[]; // The change is here
   total: number;
-  receiptRef: RefObject<HTMLDivElement | null>; // ✅ Allow null here
+  receiptRef: RefObject<HTMLDivElement | null>;
 }
 
 const ReceiptModal = ({
@@ -46,7 +51,7 @@ const ReceiptModal = ({
           <ul className="mt-2 space-y-1">
             {services.map((s) => (
               <li key={s.id}>
-                {s.name} — ₦{s.price}
+                {s.name} — ₦{s.price} {/* This line now works */}
               </li>
             ))}
           </ul>

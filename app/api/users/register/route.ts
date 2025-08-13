@@ -1,20 +1,37 @@
 // app/api/users/register/route.ts
-import { NextResponse } from "next/server"
-import { PrismaClient } from "@prisma/client"
-import bcrypt from "bcrypt"
-
-const prisma = new PrismaClient()
+import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import { dbConnect } from "@/lib/mongoose";
+import User from "@/models/User";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json()
+  try {
+    await dbConnect();
 
-  const exists = await prisma.user.findUnique({ where: { email } })
-  if (exists) return NextResponse.json({ error: "User exists" }, { status: 400 })
+    const { email, password } = await req.json();
 
-  const hashed = await bcrypt.hash(password, 10)
-  const user = await prisma.user.create({
-    data: { email, password: hashed, role: "admin" },
-  })
+    // Check if user exists
+    const exists = await User.findOne({ email });
+    if (exists) {
+      return NextResponse.json({ error: "User exists" }, { status: 400 });
+    }
 
-  return NextResponse.json({ success: true, user: { id: user.id, email: user.email } })
+    // Hash password
+    const hashed = await bcrypt.hash(password, 10);
+
+    // Create new user
+    const user = await User.create({
+      email,
+      password: hashed,
+      role: "admin", // You can change this default
+    });
+
+    return NextResponse.json({
+      success: true,
+      user: { id: user._id, email: user.email },
+    });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
 }

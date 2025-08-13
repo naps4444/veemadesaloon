@@ -1,27 +1,28 @@
 // types/service.ts
 
 export interface Variation {
-  id: string;
+  _id: string; // Changed from 'id' to '_id'
   name: string;
   price: number;
 }
 
 export interface Service {
-  id: string;
+  _id: string; // Changed from 'id' to '_id'
   name: string;
-  categoryId: string; // <-- This is the property that was missing.
+  categoryId: string; // This will store the _id of the parent Category
   variations: Variation[];
 }
 
 export interface Category {
-  id: string;
+  _id: string; // Changed from 'id' to '_id'
   name: string;
   services: Service[];
 }
 
-// You can also place the CartItem type here for consistency
+// Your CartItem type can remain as 'id' if you transform _id to id when creating cart items,
+// or you can adjust it to use _id for consistency if preferred.
 export interface CartItem {
-  id: string; // Unique ID for the selected variation
+  id: string; // Unique ID for the selected variation (e.g., service._id-variation._id)
   serviceId: string;
   variationId: string;
   serviceName: string;
