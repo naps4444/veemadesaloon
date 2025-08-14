@@ -215,10 +215,10 @@ export default function Booking() {
           <div className="bg-white p-6 rounded shadow-md w-[90%] font-bold max-w-sm relative bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1754640483/602b8b48-bc1d-47c4-a6cf-8ea1581b315b_llmn7d.jpg')] bg-cover bg-center" ref={modalRef}>
             <Image
               src="/mod2.png"
-              height={100}
-              width={110}
+              height={70}
+              width={70}
               alt="veemade rose"
-              className="absolute -top-6 right-8 rotate-[270deg]"
+              className="absolute -top-3 right-8 rotate-[270deg]"
             />
             <h2 className="text-lg font-semibold mb-4 font-croissant-one text-[#000000] pl-2">Enter your details</h2>
 
