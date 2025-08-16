@@ -46,7 +46,7 @@ const Hero = () => {
   return (
     <div className="2xl:container mx-auto">
       <div
-        className="w-full h-screen md:h-[300px] lg:h-[500px] bg-[url('/heromob.jpg')] md:bg-[url('/hero.jpg')] bg-cover bg-center mt-[70px] flex flex-col justify-center items-center relative"
+        className="w-full h-screen md:h-[300px] lg:h-[500px] bg-[url('/newhero1.png')] md:bg-[url('/newhero2.png')] bg-cover bg-center mt-[70px] flex flex-col justify-center items-center relative"
         role="img"
         aria-label="Hero Image"
       >
