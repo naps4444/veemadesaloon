@@ -14,12 +14,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        {/* Paystack */}
         <Script src="https://js.paystack.co/v1/inline.js" strategy="beforeInteractive" />
+
+        {/* Lottie files */}
         <Script
           src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
           type="module"
-          crossOrigin="anonymous" // This is the fix for the cross-origin error
+          crossOrigin="anonymous"
         />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-EG4W8J0J6Z"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EG4W8J0J6Z');
+          `}
+        </Script>
       </head>
       <body className="bg-black text-white border-[#291f1993]">
         {/* Layout container with full height */}
@@ -27,13 +44,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Navbar at the top */}
           <Navbar />
 
-          {/* Main content area that grows and allows loader centering */}
+          {/* Main content area */}
           <main className="flex-grow">{children}</main>
 
           {/* Footer at the bottom */}
           <Footer />
         </div>
 
+        {/* Floating WhatsApp button */}
         <WhatsAppButton />
 
         {/* Toast notifications */}

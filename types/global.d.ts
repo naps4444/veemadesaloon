@@ -1,5 +1,3 @@
-// types/global.d.ts
-
 import type mongoose from "mongoose";
 
 declare global {
@@ -9,5 +7,7 @@ declare global {
     promise: Promise<mongoose.Mongoose> | null;
   } | undefined;
 }
+
+declare module "*.css";
 
 export {};

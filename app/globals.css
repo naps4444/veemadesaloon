@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "leaflet/dist/leaflet.css";
+
+
 /* Google Fonts */
 /* Any other comments should be below the @import */
 
