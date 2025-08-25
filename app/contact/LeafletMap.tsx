@@ -6,14 +6,15 @@ import L, { LatLngExpression } from "leaflet";
 // Fix default icon issue with Leaflet + Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "/leaflet/marker-icon-2x.png",
-  iconUrl: "/leaflet/marker-icon.png",
-  shadowUrl: "/leaflet/marker-shadow.png",
+  iconRetinaUrl: "/marker-icon-sha.png",
+  iconUrl: "/marker-icon.png",
+  shadowUrl: "/marker-icon.png",
 });
 
 const LeafletMap = () => {
   // Lagos coordinates
-  const position: LatLngExpression = [6.5244, 3.3792];
+  const position: LatLngExpression = [6.431173517675846, 3.4629119088807525];
+
 
   return (
     <MapContainer

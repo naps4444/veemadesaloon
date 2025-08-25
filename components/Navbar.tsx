@@ -6,11 +6,15 @@ import { HiOutlineMenuAlt3, HiOutlineX } from 'react-icons/hi';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
+import { usePathname } from 'next/navigation';
+import Loader from './Loader'; // 👈 import your loader
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const selectedServices = useCartStore((state) => state.selectedServices);
+  const pathname = usePathname();
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -66,8 +70,16 @@ const Navbar = () => {
     };
   }, []);
 
+  // Trigger loader on route change
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 800); // adjust duration
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
   return (
     <div>
+      {loading && <Loader />} {/* 👈 show loader */}
       <nav className="w-full bg-[#100F15] fixed z-50 top-0 left-0 md:px-4 font-cinzel">
         <div className="bg-[#100F15] shadow-md px-2 flex justify-between items-center 2xl:container mx-auto">
           <Link href="/" className="text-xl font-bold">

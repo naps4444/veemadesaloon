@@ -48,8 +48,8 @@ export default function Sidebar({ isOpen, closeSidebar, onCategoryClick, sidebar
       </div> */}
 
       <div className="p-4 flex-grow overflow-y-auto hide-scrollbar pt-16">
-        <h2 className="text-xl font-croissant-one mb-4 pt-6 mt-26 ">Categories</h2>
-        <ul className="space-y-2">
+        <h2 className="text-2xl font-croissant-one mb-4 pt-6 mt-26 ">Categories</h2>
+        <ul className="space-y-2 font-georgia">
           {dummyCategories.map((category) => (
             <li key={category.id}>
               <a

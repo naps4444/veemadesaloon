@@ -11,7 +11,7 @@ const ContactPage = () => {
   return (
     <main className="px-6 sm:px-12 md:px-20 lg:px-32 py-16 bg-[#1C1C1C] text-gray-100">
       {/* Page Header Design */}
-      <div className="flex justify-between items-center bg-[#22372889] rounded pb-4 px-4">
+      <div className="flex justify-between items-center bg-[#22372889] rounded pb-4 mt-8 px-4">
         <div className="flex gap-3 items-center mt-5">
           <Image
             src="/vertline.svg"
@@ -36,22 +36,22 @@ const ContactPage = () => {
 
       {/* Contact Info Section */}
       <section className="max-w-4xl mx-auto text-center mt-10">
-        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-6">
+        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-6 font-cinzel">
           Get in Touch
         </h2>
-        <p className="text-gray-300 leading-relaxed mb-8">
+        <p className="text-gray-300 leading-relaxed mb-8 text-base sm:text-lg md:text-xl font-cormorant-upright">
           We’d love to hear from you! Whether you’re booking an appointment,
           asking about our services, or just saying hello, feel free to reach
           out.
         </p>
-        <div className="grid sm:grid-cols-3 gap-6 text-gray-300">
+        <div className="grid sm:grid-cols-3 gap-6 font-lucida-bright text-gray-300">
           <div className="p-4 bg-[#22372889] rounded-lg shadow">
             <h3 className="font-semibold text-[#A0522D] mb-2">Phone</h3>
-            <p>+234 800 123 4567</p>
+            <p>+234 903 668 2394</p>
           </div>
           <div className="p-4 bg-[#22372889] rounded-lg shadow">
             <h3 className="font-semibold text-[#A0522D] mb-2">Email</h3>
-            <p>info@veemade.com</p>
+            <p>veemadesaloon@gmail.com</p>
           </div>
           <div className="p-4 bg-[#22372889] rounded-lg shadow">
             <h3 className="font-semibold text-[#A0522D] mb-2">Address</h3>
@@ -62,7 +62,7 @@ const ContactPage = () => {
 
       {/* Contact Form */}
       <section className="max-w-3xl mx-auto mt-12">
-        <form className="bg-[#22372889] p-6 rounded-2xl shadow-lg space-y-5">
+        <form className="bg-[#22372889] p-6 rounded-2xl shadow-lg space-y-5 font-cormorant-upright">
           <div className="grid sm:grid-cols-2 gap-4">
             <input
               type="text"
@@ -96,7 +96,7 @@ const ContactPage = () => {
 
       {/* Leaflet Map Section */}
       <section className="max-w-6xl mx-auto mt-16">
-        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-6 text-center">
+        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-6 text-center font-cinzel">
           Find Us
         </h2>
         <div className="h-[400px] w-full rounded-xl overflow-hidden shadow-lg">

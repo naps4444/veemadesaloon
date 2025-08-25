@@ -175,7 +175,7 @@ export default function ServicesPage() {
           </p>
           <div className="flex justify-center mb-6">
             <input
-              type="text"
+              type="text" 
               placeholder="Search services..."
               value={searchQuery}
               onChange={(e) => {
@@ -183,7 +183,7 @@ export default function ServicesPage() {
                 // ⭐ Corrected: We reset the page number directly here
                 setCurrentPage(1); 
               }}
-              className="w-full max-w-md px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-700 bg-white text-[#223728] placeholder-gray-400"
+              className="w-full max-w-md px-4 py-2 border font-dancing-script rounded-full focus:outline-none focus:ring-2 focus:ring-green-700 bg-white text-[#223728] placeholder-gray-400"
             />
           </div>
           {loading ? (
@@ -201,7 +201,7 @@ export default function ServicesPage() {
           ) : (
             categories.map((category) => (
               <div key={category._id}>
-                <h3 className="text-white text-xl font-bold mt-8 mb-4">
+                <h3 className="text-white text-xl font-bold mt-8 mb-4 font-volkhov">
                   {category.name}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4 font-cinzel-decorative">
@@ -219,7 +219,7 @@ export default function ServicesPage() {
             ))
           )}
           {!loading && totalServices > ITEMS_PER_PAGE && (
-            <div className="flex justify-center items-center mt-8 space-x-4">
+            <div className="flex justify-center items-center mt-8 space-x-4 font-georgia">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}

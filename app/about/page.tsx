@@ -37,7 +37,7 @@ const AboutPage = () => {
         {/* <h1 className="text-[30px] font-bold text-[#2E7D32] mb-6">
           About Veemade Unisex Salon & Spa
         </h1> */}
-        <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-300 mb-8">
+        <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-300 mb-8 font-cormorant-upright">
           At <span className="font-semibold text-[#A0522D]">Veemade</span>, we believe self-care is more than beauty —
           it’s a lifestyle. Our unisex salon and spa is designed to help you relax, refresh,
           and feel your best. With a team of skilled stylists and therapists, we blend
@@ -67,16 +67,16 @@ const AboutPage = () => {
       {/* Mission & Why Choose Us */}
       <section className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mt-12">
         <div>
-          <h2 className="text-2xl font-semibold text-[#2E7D32] mb-4">Our Mission</h2>
-          <p className="text-gray-300 leading-relaxed">
+          <h2 className="text-2xl font-semibold text-[#2E7D32] mb-4 font-cinzel">Our Mission</h2>
+          <p className="text-gray-300 leading-relaxed font-lucida-bright">
             To redefine beauty and wellness by providing premium salon and spa services in a
             serene, welcoming environment. We are committed to ensuring every client leaves
             feeling confident, radiant, and cared for.
           </p>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold text-[#A0522D] mb-4">Why Choose Us?</h2>
-          <ul className="text-gray-300 space-y-3 list-disc list-inside">
+          <h2 className="text-2xl font-semibold text-[#A0522D] mb-4 font-cinzel">Why Choose Us?</h2>
+          <ul className="text-gray-300 space-y-3 list-disc list-inside font-lucida-bright">
             <li>Expert stylists & spa therapists</li>
             <li>Modern techniques with a personal touch</li>
             <li>Relaxing atmosphere for both men & women</li>
@@ -87,16 +87,16 @@ const AboutPage = () => {
 
       {/* Closing Call-to-Action */}
       <section className="max-w-4xl mx-auto text-center mt-16">
-        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-4">
+        <h2 className="text-2xl font-semibold text-[#2E7D32] mb-4 font-cinzel">
           Experience the Veemade Difference
         </h2>
-        <p className="text-gray-300 leading-relaxed mb-6">
+        <p className="text-gray-300 leading-relaxed mb-6 font-lucida-bright">
           Whether you’re coming in for a quick haircut, a spa day, or a total transformation,
           we’re here to make it unforgettable. Step into Veemade — where beauty meets relaxation.
         </p>
         <a
           href="/services"
-          className="inline-block px-6 py-3 bg-[#A0522D] text-white font-medium text-lg rounded-2xl shadow-md hover:bg-[#8B4513] transition-all"
+          className="inline-block px-6 py-3 bg-[#A0522D] text-white font-medium text-lg mt-8 rounded-2xl shadow-md hover:bg-[#8B4513] transition-all font-cinzel-decorative"
         >
           Explore Our Services
         </a>
