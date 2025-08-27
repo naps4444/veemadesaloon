@@ -15,8 +15,8 @@ declare global {
   }
 }
 
-// Define your WhatsApp number here, same as ServicesPage for consistency
-const WHATSAPP_NUMBER = '2349036682394'; // ✨ IMPORTANT: Replace with your actual WhatsApp number
+
+const WHATSAPP_NUMBER = '2349036682394'; 
 
 export default function CheckoutPage() {
   const {
@@ -32,10 +32,9 @@ export default function CheckoutPage() {
   } = useCartStore();
 
   const [paystackReady, setPaystackReady] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // NEW: Add a loading state
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Calculate total, ignoring services with price 0 for payment
   const total = selectedServices.reduce((sum, s) => (s.price > 0 ? sum + s.price : sum), 0);
 
   useEffect(() => {
@@ -60,7 +59,6 @@ export default function CheckoutPage() {
   }, []);
 
   const handlePaystackCallback = async (response: any) => {
-    // We keep the loader on while the booking is being confirmed
     try {
       const res = await fetch('/api/bookings', {
         method: 'POST',
@@ -71,7 +69,7 @@ export default function CheckoutPage() {
           email,
           phone,
           services: selectedServices,
-          total, // This total only includes priced services
+          total,
           date: selectedDate,
           timeSlot: selectedTime,
           newsletterOptOut,
@@ -82,7 +80,7 @@ export default function CheckoutPage() {
         const text = await res.text();
         console.error('Server response (not JSON):', text);
         toast.error('Booking failed.');
-        setIsLoading(false); // Turn off loader on error
+        setIsLoading(false); 
         return;
       }
 
@@ -91,18 +89,17 @@ export default function CheckoutPage() {
       toast.success('Booking successful!');
       clearCart();
 
-      // The loader will remain active until the receipt page is rendered
       router.push(`/receipt/${response.reference}`);
     } catch (err) {
       console.error('Callback error:', err);
       toast.error('Booking failed due to an internal error.');
-      setIsLoading(false); // Turn off loader on error
+      setIsLoading(false); 
     }
   };
 
   const handlePaystackClose = () => {
     toast.error('Payment window closed.');
-    setIsLoading(false); // Turn off loader if the user closes the payment window
+    setIsLoading(false);
   };
 
   const pay = () => {
@@ -116,11 +113,9 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Check for services without a price
     const servicesWithoutPrice = selectedServices.filter(item => item.price === 0);
 
     if (servicesWithoutPrice.length > 0) {
-      // Generate WhatsApp message including date and time
       let message = `Hello, I'd like to inquire about the prices for the following services I've added to my cart:\n\n` +
                     `Date: ${selectedDate || 'Not selected'}\n` +
                     `Time: ${selectedTime || 'Not selected'}\n\n`;
@@ -136,27 +131,24 @@ export default function CheckoutPage() {
       });
       message += "\nCould you please provide more details?";
 
-      // Encode the message for URL and redirect to WhatsApp
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-      
-      setIsLoading(true); // Show loading state briefly
+
+      setIsLoading(true);
       setTimeout(() => {
-        window.location.href = whatsappUrl; // Changed to window.location.href
+        window.location.href = whatsappUrl; 
         setIsLoading(false);
-      }, 1000); // Small delay for visual feedback
-      
+      }, 1000); 
       toast.success('Redirecting to WhatsApp for price inquiry!');
-      return; // Stop the function here, do not proceed to Paystack
+      return; 
     }
 
-    // Only proceed to Paystack if all selected services have a price > 0
-    setIsLoading(true); // Enable the loader when payment is initiated
+    setIsLoading(true);
 
     const handler = window.PaystackPop.setup({
       key: process.env.NEXT_PUBLIC_PAYSTACK_KEY || '',
       email: email || 'customer@example.com',
-      amount: total * 100, // Paystack amount is in kobo/centavos
+      amount: total * 100, 
       currency: 'NGN',
       callback: (response: any) => handlePaystackCallback(response),
       onClose: handlePaystackClose,
@@ -167,7 +159,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {isLoading && <Loader />} {/* Conditionally render the loader */}
+      {isLoading && <Loader />} 
       <div
         className="pt-[120px] pb-[120px] md:pb-[60px] bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1752259396/black-wooden-wall_onadlw.jpg')] bg-cover bg-no-repeat bg-center 2xl:container mx-auto"
       >
@@ -242,22 +234,19 @@ export default function CheckoutPage() {
               )}
               
               {(name || email || phone) && (
-                <div className="mt-4 md:mt-6 font-cormorant-upright flex flex-col mx-auto items-center">
-                  <h2 className="text-lg mt-2 font-semibold">Your Details:</h2>
+                <div className="mt-4 md:mt-6 font-cormorant-upright flex flex-col mx-auto ">
+                  <h2 className="text-lg mt-2 font-semibold text-start ml-14 md:ml-10 lg:ml-8 xl:ml-16">Your Details:</h2>
                   <div className="flex flex-col justify-between lg:gap-2 w-10/12 lg:w-11/12  mx-auto text-start font-lucida-bright bg-[#223728] rounded-lg px-6 xl:px-14 py-3 mt-2">
-                    <p className='md:whitespace-normal break-words'> {/* ✨ Added break-words */}
+                    <p className='md:whitespace-normal break-words'>  
                       Name: <strong>{name || 'Not provided'}</strong>
                     </p>
-                    <p className='md:whitespace-normal break-words mt-2'> {/* ✨ Added break-words */}
+                    <p className='md:whitespace-normal break-words mt-2'> 
                       Email: <strong>{email || 'Not provided'}</strong>
                     </p>
-                    <p className='md:whitespace-normal break-words mt-2'> {/* ✨ Added break-words */}
+                    <p className='md:whitespace-normal break-words mt-2'> 
                       Phone: <strong>{phone || 'Not provided'}</strong>
                     </p>
-                    {/* NEW: Display newsletter preference */}
-                    {/* <p>
-                      Newsletter: <strong>{newsletterOptOut ? 'No' : 'Yes'}</strong>
-                    </p> */}
+                   
                   </div>
                 </div>
               )}
