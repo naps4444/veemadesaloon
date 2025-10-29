@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import Loader from './Loader';
 
 const Hero = () => {
   const arrowRef = useRef<HTMLDivElement>(null);
@@ -32,14 +33,7 @@ const Hero = () => {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-black bg-opacity-80 flex items-center justify-center">
-        <div className="sk-folding-cube">
-          <div className="sk-cube1 sk-cube"></div>
-          <div className="sk-cube2 sk-cube"></div>
-          <div className="sk-cube4 sk-cube"></div>
-          <div className="sk-cube3 sk-cube"></div>
-        </div>
-      </div>
+      <Loader/>
     );
   }
 
@@ -48,8 +42,8 @@ const Hero = () => {
       <div
   className="
     w-full h-screen md:h-[300px] lg:h-[800px] 
-    bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1760897229/newhero1_uce7yb.png')] 
-    md:bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1760897277/newhero2_qe3qbc.png')] 
+    bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1761753257/Untitled_design_2_he9joc.png')] 
+    md:bg-[url('https://res.cloudinary.com/dpm3yp0xs/image/upload/v1761753256/Untitled_design_1_f8evkz.png')] 
     bg-cover bg-center mt-[70px] flex flex-col justify-center items-center relative
   "
 >
