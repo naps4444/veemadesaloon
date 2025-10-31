@@ -22,7 +22,7 @@ const Boxcomp = () => {
 
                 <div className='flex flex-col md:grid md:grid-cols-2'>
                     <div>
-                        <Image src="/bladeimg.svg" alt="veemade box image" width={100} height={100} className='mx-auto w-full' />
+                        <Image src="https://res.cloudinary.com/dpm3yp0xs/image/upload/v1761937615/bladeimg_int02b.svg" alt="veemade box image" width={100} height={100} className='mx-auto w-full' />
                     </div>
                     <div className='text-center flex flex-col justify-center items-center bg-[#223728] text-[#FFFFFF] p-4'>
                         <h1 className='font-cormorant-upright text-[22px]'>CLEAN ENVIRONMENT</h1>
@@ -34,7 +34,7 @@ const Boxcomp = () => {
                 </div>                
             </div>
 
-            <div className='bg-[url("/hairdo.svg")] bg-cover bg-center flex justify-center items-center w-full h-[300px] '>
+            <div className='bg-[url("https://res.cloudinary.com/dpm3yp0xs/image/upload/v1761938097/hairdo_oxsuqf.svg")] bg-cover bg-center flex justify-center items-center w-full h-[300px] '>
 
             <div className='text-[#B19D60] mx-auto text-center px-4 lg:w-7/12 py-10 bg-[#1E1E1E73]'>
                 <h1 className='font-cormorant-upright text-[22px]'>CERTIFIED BARBERS</h1>

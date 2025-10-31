@@ -8,12 +8,12 @@ const ContactUs = () => {
         <div className='text-center text-white'>
         <h1 className='text-3xl font-croissant-one '>Contact Us</h1>
 
-        <p className='font-cinzel-decorative text-center md:w-8/12 mx-auto lg:w-6/12'>Feel free to contact us any time. we will get back to you as soon as we can!</p>
+        <p className='font-cinzel-decorative text-center w-10/12 md:w-8/12 mx-auto lg:w-6/12'>Feel free to contact us any time. we will get back to you as soon as we can!</p>
 
         </div>
 
 
-        <form className='px-2 md:w-8/12 lg:w-6/12 mx-auto mt-4 font-croissant-one'>
+        <form className='px-2 w-11/12 md:w-8/12 lg:w-6/12 mx-auto mt-4 font-croissant-one'>
 
         <div className='md:flex gap-2 md:gap-4'>
             <div className='flex flex-col w-full gap-2 md:gap-4'>
@@ -42,7 +42,7 @@ const ContactUs = () => {
         </form>
 
         <div className='hidden md:block absolute top-[100px] lg:top-[70px] xl:top-[25px] right-0'>
-            <Image src="/conchair.svg" alt="Contact Us veemade" width={500} height={500} className="mx-auto md:w-[150px] lg:w-[250px] xl:w-[270px] mt-4" />
+            <Image src="https://res.cloudinary.com/dpm3yp0xs/image/upload/v1761938258/conchair_abuzp9.svg" alt="Contact Us veemade" width={500} height={500} className="mx-auto md:w-[150px] lg:w-[250px] xl:w-[270px] mt-4" />
         </div>
         
         
